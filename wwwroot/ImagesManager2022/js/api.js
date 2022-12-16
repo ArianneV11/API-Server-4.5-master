@@ -1,6 +1,6 @@
 
-const apiBaseURL = "http://localhost:5000/api/images";
-const apiBaseURL2 = "http://localhost:5000/";
+const apiBaseURL = "https://tp-final-ariannev-rickya.glitch.me/api/images";
+const apiBaseURL2 = "https://tp-final-ariannev-rickya.glitch.me/images";
 function HEAD(successCallBack, errorCallBack) {
     $.ajax({
         url: apiBaseURL,

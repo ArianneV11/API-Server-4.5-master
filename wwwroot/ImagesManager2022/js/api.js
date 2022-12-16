@@ -1,7 +1,7 @@
 
 const apiBaseURL = "https://tp-final-ariannev-rickya.glitch.me/api/images";
 const apiBaseURL2 = "https://tp-final-ariannev-rickya.glitch.me/";
-//lien qui sont avec glitch.
+//lien qui sont avec glitch. edge ne fontionne pas surper
 function HEAD(successCallBack, errorCallBack) {
     $.ajax({
         url: apiBaseURL,

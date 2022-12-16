@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Images Manager</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="css/site.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+        <link rel="manifest" href="images/site.webmanifest">
+        <link rel="icon" href="favicon.ico">
+    </head>
+
+    <body>
+        <div class="mainContainer">
+            <div class="headerPanel">
+                <div class="headerLayout">
+                    <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon"
+                        title="Gestionnaire d'images">
+                   <div style="display:inline-flex">
+                        <span class="header outLinedText tbg-yellow">
+                            P
+                        </span>
+                        <span class="header outLinedText tbg-orange">
+                            I
+                        </span>
+                        <span class="header outLinedText tbg-red">
+                            C
+                        </span>
+                        <span class="header outLinedText tbg-pink ">
+                            T
+                        </span>
+                        <span class="header outLinedText tbg-black">
+                            -
+                        </span>
+                        <span class="header outLinedText tbg-purple">
+                            C
+                        </span>
+                        <span class="header outLinedText tbg-blue">
+                            L
+                        </span>
+                        <span class="header outLinedText tbg-green">
+                            O
+                        </span>
+                        <span class="header outLinedText tbg-grass">
+                            U
+                        </span>
+                        <span class="header outLinedText tbg-yellow">
+                            D
+                        </span>
+                    </div>
+
+                    <div id="ShowSearch" style="display:flex">
+                        <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image" data-toggle="tooltip"></span>
+                        <span id="order" class="cmd fa fa-sort-amount-desc" data-toggle="tooltip"></span>
+                        <span id="show" class="cmd fa fa-search-plus" data-toggle="tooltip"></span>
+                    </div> 
+                    <div id="ShowSearchBar" style="display:none">
+                        <select id="selectSort">
+                            <option value="Date" selected>Date</option>
+                            <option value="Title">Title</option>
+                            <option value="Description">Description</option>
+                        </select>
+                        <select id="usersList">
+                            <option value=0> Tous les usagers</option>
+                        </select>
+                        <div>
+                            <input type="text" id="researchBar" placeholder="Recherche par text"/>
+                        </div>
+                        <div>
+                            <input type="text" id="MotsClehBar" placeholder="Recherche par mots-clés"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="connectionBar">
+                    <div class="loggedUserAvatarContainerImg" id="loggedUserAvatarContainerImg"></div>
+                    <div class="loggedUserAvatarContainer" id="loggedUserAvatarContainer"></div>
+
+                    <span class="cmd fa fa-sign-in" id="newLoginCmd" title="Se Connecter" data-toggle="tooltip"></span>
+                    <span class="cmd fa fa-user-plus" id="newRegisterCmd" title="Création de compte" data-toggle="tooltip"></span> 
+                    
+                    <span class="cmd fa fa-address-card" id="profilCmd" title="Mon Profil" data-toggle="tooltip"></span>
+                    <span class="cmd fa fa-sign-out" id="logoutCmd" title="Se déconnecter" data-toggle="tooltip"></span>
+                </div>
+            </div>
+            <div class="scrollContainer">
+                <div id="imagesList">
+                    <!-- filled programmatically-->
+                </div>
+            </div>
+<!-------------------------------------------------------------------------------------------------->
+            <!--Login d'usager-->
+            <div id="loginDlg">
+                <form id="loginForm">
+                    <label for="login_email_input">Courriel</label>
+                    <input type="email" id="login_email_input" class="form-control" required>
+                    
+                    <label for="login_password_input">Mot de passe</label>
+                    <input type="password" id="login_password_input" class="form-control" minlength="6" required>    
+                </form>
+            </div>
+            <!--Logout d'usager-->
+            <div id="logoutDlg">
+                <form id="logoutForm">
+                    <div>Voulez-vous vous déconnectez?</div>
+                </form>
+            </div>
+            <!--Création des usagers-->
+            <div id="profilDlg">
+                <form id="profilForm">
+                    <input type="hidden" id="profil_id" value="0">
+                    <input type="hidden" id="profil_AvatarGUID" value="">
+                    <input type="hidden" id="profil_AvatarURL" value="">
+
+                    <label for="name_input">Nom d'usager</label>
+                    <input type="text" id="name_input" class="form-control" required>
+
+                    <label for="email_input">Courriel</label>
+                    <input type="email" id="email_input" class="form-control" required>
+
+                    <label for="password_input">Mot de passe</label>
+                    <input type="password" id="password_input" class="form-control" matchedPasswordId="profil_confirm" minlength="6">
+
+                    <label for="profil_confirm">Confirmation de mot de passe</label>
+                    <input type="password" id="profil_confirm" class="form-control">
+
+                    <label for="avatar">Avatar</label>
+                    <div id='avatar' class='ImageUploader' defaultImage='images/No_Avatar.png' waitingImage='images/writing.gif'>
+                    </div>
+                    <div class="note" style="font-size:12px; color:blue">Cliquez-Déposez une image</div>
+                </form>
+            </div>
+            <!--Vérification du courriel-->
+            <div id="emailVerifyDlg">
+                <!--Vérification du courriel-->
+                <form id="verifyForm">
+                    <input type="hidden" id="verify_code_UserId_input" value="0">
+                    <label for="verify_code_input">Veuillez entrer le code qui vous a été envoyé comme email</label>
+                    <input type="password" id="verify_code_input" class="form-control" required>
+                </form>
+            </div>
+            <!--image-->
+            <div id="imageDlg">
+                <form id="imageForm">
+                    <input type="hidden" id="Id_input" value="0">
+                    <input type="hidden" id="date_input" value="0">
+                    <input type="hidden" id="GUID_input" value="">
+
+                    <label for="title_input">Titre</label>
+                    <input type="text" id="title_input" class="form-control" required>
+
+                    <label for="decription_input">Description</label>
+                    <textarea id="description_input" class="form-control" required></textarea>
+
+                    <label for="image">Image</label>
+                    <div id='image' class='ImageUploader' defaultImage='images/No_Image.png'
+                        waitingImage='images/writing.gif'>
+                    </div>
+                    <div class="note">Cliquez-Déposez une image</div>
+                    <label for="Share_input">Shared</label>
+                    <input type="checkbox" value="true" id="Share_input">
+                </form>
+            </div>
+            <div id="imageDlgShow">
+                <form id="imageView">
+                    <input type="hidden" id="Id_View" value="0">
+                    <input type="hidden" id="date_View" value="0">
+                    <input type="hidden" id="GUID_View" value="">
+
+                    <label for="title_View">Titre</label>
+                    <p type="text" id="title_View" class="form-control" required>
+
+                    <label for="decription_View">Description</label>
+                    <p id="description_View" class="form-control" required></p>
+
+                    <label for="image_View">Image</label>
+                    <div id='image_View' class='ImageUploader' defaultImage='images/No_Image.png'
+                        waitingImage='images/writing.gif'>
+                    </div>
+                    
+                </form>
+            </div>
+            <div id="confirmDeleteDlg">
+                <span id="confirmationMessage"></span>
+            </div>
+            <div id="confirmDeleteProfilDlg">
+                <span id="confirmationMessage"></span>
+            </div>
+            <div id="errorDlg">
+                <span id="errorMessage"></span>
+            </div>
+            <div id="errorProfilDlg">
+                <span id="errorMessage"></span>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script src="js/customValidation.js"></script>
+        <script src="js/imageUploader.js"></script>
+        <script src="js/api.js"></script>
+        <script src="js/date.js"></script>
+        <script defer>
+            const periodicRefreshPeriod = 5;
+            let holdCheckETag = false;
+            let currentETag = "";
+            let createMode = true;
+            let registerMode = true;
+            let searchCategory = "";
+            let searchTitle = "";
+            let searchBarActive = false;
+            //let hideSearchBar = true;
+            let imageIdToDelete = 0; // used by confirmDeleteDlg
+            let selectedUser = 0;
+            let profilIdToDelete = 0; // used by confirmDeleteDlg
+            let selectedCategory = "";
+            let imagesCount = 50;
+            let appendCount = 3;
+            let previousScrollPosition = 0;
+            let appendMode = false;
+            let connected = false;
+            let unverified = false;
+            let deleteAction = 0;
+            let unsubscribe = 1;
+            let SelectedUserPhoto= false;
+            var sortChange = "Date";
+            var order ="desc";
+            var userIdConnected = 0;
+            let ListUserName=[{"Name":"Tous les usagers"}];
+            let SelectNameChange="";
+            let hideSearchBar = true;
+            let research = "";
+            var isShare;
+            let researchMotCle = "";
+            
+            $("#profilCmd").hide();
+            $("#logoutCmd").hide();
+            $("#newImageCmd").hide();
+
+            init_UI();
+            HEAD(checkETag, error);
+            setInterval(() => { HEAD(checkETag, error) }, periodicRefreshPeriod * 1000);
+
+            function checkETag(ETag) {
+                if (!holdCheckETag && ETag != currentETag) {
+                    currentETag = ETag;
+                    getImagesList();
+                }
+            }
+            document.getElementById("researchBar").addEventListener("input",()=>{
+                research=document.getElementById("researchBar").value;
+                getImagesList();
+            });
+            document.getElementById("MotsClehBar").addEventListener("input",()=>{
+                researchMotCle = document.getElementById("MotsClehBar").value;
+                if(researchMotCle==""){
+                    researchMotCle= "&keyword="+ researchMotCle;
+                }
+                getImagesList();
+            });
+            document.getElementById("show").addEventListener("click",()=>{
+                let Stile = document.getElementById("ShowSearchBar").style;
+                if(Stile.display=="flex"){
+                    Stile.display ="none";
+                    document.getElementById("show").className ="cmd fa fa-search-plus";
+                }
+                else{
+                    Stile.display ="flex";
+                    document.getElementById("show").className ="cmd fa fa-search-minus";
+                }
+            });
+            document.getElementById("selectSort").addEventListener("change",()=>{
+                sortChange=document.getElementById("selectSort").value;
+                getImagesList();
+            });
+            document.getElementById("usersList").addEventListener("change",()=>{
+                let id=document.getElementById("usersList").value;
+                if(id == 0)
+                {
+                    SelectNameChange="";
+                    SelectedUserPhoto = false;
+                }
+                else{
+                    SelectNameChange="UserId="+id;
+                    SelectedUserPhoto = true;
+                }
+                userIdConnected = retrieveUserInfo().Name;
+                getImagesList();
+            });
+            document.getElementById("Share_input").addEventListener("change",()=>{
+                let changeCheck = document.getElementById("Share_input").checked;
+                $("#Share_input").val(changeCheck);
+            });
+            
+            function AddUserName(userNameRecived,UserId){
+                let valid=true;
+                ListUserName.forEach(element => {
+                    if(element.Name== userNameRecived){ 
+                        valid= false;
+                    }
+                });
+                if(valid){
+                    ListUserName.push({"Name":userNameRecived})
+                    createSearchBarUser(userNameRecived,UserId);
+                }
+            }
+            /*function refreshUsersList(usersList) {
+                let list = $("#usersList");
+                list.empty();
+                list.append($("<option value=0>Tous les usagers</option>"));
+                let profil = null;
+                if(connected && !unverified){
+                    profil = retrieveLogedUser();
+                    if(profil.Id == selectedUser)
+                        list.append($(`<option value=${profil.Id} selected>Mes images</option>`));
+                }
+                for(let item of usersList){
+                    //console.log("item.UserId=", item.UserId)
+                    if((profil && (profil.id != item.UserId)) || (profil == null)){
+                        if(item.UserId == selectedUser)
+                            list.append($(`<option value=${item.UserId} selected>${item.Username}</option>`));
+                        else
+                            list.append($(`<option value=${item.UserId}>${item.Username}</option>`));
+                    }
+                }
+            }*/
+            function createSearchBarUser(Name,UserId){
+                document.getElementById("usersList").innerHTML+=
+                "<option value="+UserId+">"+Name+" </option>";
+            }
+            document.getElementById("order").addEventListener('click',changeDesc);
+
+            function changeDesc(){
+                if(order=="desc"){
+                    order="";
+                    document.getElementById("order").className ="cmd fa fa-sort-amount-desc";
+                }
+                else{ 
+                    order ="desc";
+                    document.getElementById("order").className ="cmd fa fa-sort-amount-asc";
+                }
+                
+                getImagesList();
+            }
+            /*function getUsersList(){
+                GET_ALL(refreshUsersList, error, "?sort=Username&fields=UserId,Username");
+            }*/
+           function isShareReturnAvatarImg(bool,guid)
+            {
+               // console.log(guid);
+               let image = retrieveUserInfo();
+                if(bool){
+                    return `<div class='avatar' style="background-image:url('`+guid+`')"></div>`
+                }
+                else{
+                    return `<div class='avatar' style="background-image:url('')"></div>`
+                }
+            }
+            function getImagesList(refresh = true) {
+                appendMode = !refresh;
+                //updateConnected();
+                
+                if(retrieveUserInfo()){
+                    updateToken();
+                    userIdConnected = retrieveUserInfo().Id;
+                }
+                function prepareQueryString() {
+                    let queryString = "";
+                    if (appendMode) {
+                        queryString = `?sort=`+sortChange+`,`+order+`&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
+                        imagesCount += appendCount;
+                    } else {
+                        queryString = `?sort=`+sortChange+`,`+order+`&offset=${0}&limit=${imagesCount}`;
+                    }
+                    //userIdConnected = retrieveUserInfo().Id;
+                    //console.log(queryString);
+                    return queryString;
+                }
+                GET_ALL(refreshimagesList, error, "?sort="+sortChange+","+order+"&field=UserId,UserName&" + SelectNameChange+"&keyword="+researchMotCle);
+            }
+            function refreshimagesList(images, ETag) {
+                //console.log(images);
+               
+                
+                function insertIntoImageList(image) {
+                    if(image != null){
+                        if(image.Description.includes(research)||image.Title.includes(research)){
+                            if(image.UserName){
+                                AddUserName(image.UserName,image.UserId);
+                            }
+                            if(userIdConnected==image.UserId)
+                            {
+                                $("#imagesList").append(
+                                    $(`<div class='imageLayout'>
+                                            <div class='imageHeader'>
+                                                <div class="imageTitle">${image.Title}</div>
+                                                <div    class="cmd editCmd  fa fa-pencil-square" 
+                                                        imageid="${image.Id}" 
+                                                        title="Editer ${image.Title}" 
+                                                        data-toggle="tooltip">
+                                                </div>
+                                                <div    class="cmd deleteCmd fa fa-window-close" 
+                                                        imageid="${image.Id}" 
+                                                        title="Effacer ${image.Title}" 
+                                                        data-toggle="tooltip">
+                                                </div>
+                                            </div>
+                                            <a href="${image.OriginalURL}" target="_blank">
+                                                <div    class='image' 
+                                                        style="background-image:url('${image.ThumbnailURL}')">
+                                                        <div class='avatar'
+                                                        style="background-image:url('${image.AvatarGUID}')">
+                                                        </div>`+isShareReturnAvatarImg(image.Share,image.ShareGUID)+`
+                                                </div>
+                                            </a>
+                                            <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>
+                                        </div>
+                                    `)
+                                );
+                            }
+                            else if(image.Share){
+                                $("#imagesList").append(
+                                    $(` <div class='imageLayout'>
+                                            <div class='imageHeader'>
+                                                <div class="imageTitle">${image.Title}</div>
+                                                <div    class="cmd showMore  fa fa-search" 
+                                                        imageid="${image.Id}" 
+                                                        title="Visionner ${image.Title}" 
+                                                        data-toggle="tooltip">
+                                                </div>
+                                            </div>
+                                            <a href="${image.OriginalURL}" target="_blank">
+                                                <div    class='image' 
+                                                        style="background-image:url('${image.ThumbnailURL}')">
+                                                        <div class='avatar'
+                                                        style="background-image:url('${image.AvatarGUID}')">
+                                                        </div>
+                                                </div>
+                                            </a>
+                                            <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>
+                                        </div>
+                                    `)
+                                );
+                            }
+                        }
+                    }
+                    
+                }
+                currentETag = ETag;
+                previousScrollPosition = $(".scrollContainer").scrollTop();
+                if (!appendMode) $("#imagesList").empty();
+
+                if (appendMode && images.length == 0)
+                    imagesCount -= appendCount;
+
+                for (let image of images) {
+                    insertIntoImageList(image);
+                }
+
+                $(".scrollContainer").scrollTop(previousScrollPosition);
+                $(".editCmd").off();
+                $(".deleteCmd").off();
+                $(".showMore").off();
+                $(".showMore").click(e=> {showimage(e)});
+                $(".editCmd").click(e => { editimage(e) });
+                $(".deleteCmd").click(e => { deleteimage(e) });
+
+                $('[data-toggle="tooltip"]').tooltip();
+            }
+
+            function error(status) {
+                let errorMessage = "";
+                switch (status) {
+                    case 0:
+                        errorMessage = "Le service ne répond pas";
+                        break;
+                    case 401:
+                        errorMessage = "Requête non autorisée";
+                        break;
+                    case 400:
+                    case 422:
+                        errorMessage = "Requête invalide";
+                        break;
+                    case 404:
+                        errorMessage = "Service ou données introuvables";
+                        break;
+                    case 409:
+                        errorMessage = "Conflits de données: Hyperlien existe déjà";
+                        break;
+                    case 500:
+                        errorMessage = "Erreur interne du service";
+                        break;
+                    default:
+                        errorMessage = "Une erreur est survenue";
+                        break;
+                }
+                $("#errorMessage").text(errorMessage);
+                $("#errorDlg").dialog('open');
+            }
+            function newImage() {
+                holdCheckETag = true;
+                createMode = true;
+                resetimageForm();
+                ImageUploader.imageRequired('image', true);
+                $("#imageDlg").dialog('option', 'title', "Ajout d'image");
+                $("#imageDlgOkBtn").text("Ajouter");
+                $("#imageDlg").dialog('open');
+            }
+            function editimage(e) {
+                holdCheckETag = true;
+                createMode = false;
+                GET_ID(e.target.getAttribute("imageid"), imageToForm, error);
+                holdCheckETag = true;
+                ImageUploader.imageRequired('image', false);
+                $("#imageDlg").dialog('option', 'title', "Modification d'image");
+                $("#imageDlgOkBtn").text("Modifier");
+                $("#imageDlg").dialog('open');
+            }
+            function showimage(e){
+                holdCheckETag = true;
+                createMode = false;
+                GET_ID(e.target.getAttribute("imageid"), imageFromFormView, error);
+                holdCheckETag = true;
+                ImageUploader.imageRequired('image', false);
+                $("#imageDlgShow").dialog('option', 'title', "Pict-Cloud");
+                $("#imageDlgShow").dialog('open');
+            }
+            function deleteimage(e) {
+                holdCheckETag = true;
+                imageIdToDelete = e.target.getAttribute("imageid");
+                GET_ID(
+                    imageIdToDelete,
+                    image => {
+                        $("#confirmationMessage").html("Voulez-vous vraiment effacer l'image <br><b>" + image.Title + "</b>?")
+                    },
+                    error
+                );
+                holdCheckETag = true;
+                $("#confirmDlg").dialog('option', 'title', "Retrait d'image...");
+                $("#confirmDeleteDlgOkBtn").text("Effacer");
+                $("#confirmDeleteDlg").dialog('open');
+            }
+            function resetimageForm() {
+                $("#Id_input").val("0");
+                $("#GUID_input").val("");
+                $("#date_input").val(Date.now());
+                $("#title_input").val("");
+                $("#description_input").val("");
+                ImageUploader.resetImage('image');
+                $(("#Share_input")).val(false);
+            }
+            function imageFromForm() {
+                if ($("#imageForm")[0].checkValidity()) {
+                    let image = {
+                        Id: parseInt($("#Id_input").val()),
+                        GUID: $("#GUID_input").val(),
+                        Title: $("#title_input").val(),
+                        Description: $("#description_input").val(),
+                        ImageData: ImageUploader.getImageData('image'),
+                        Date: parseInt($("#date_input").val()),
+                        UserId: userIdConnected,
+                        Share:$(("#Share_input")).val()=="true"
+                    };
+                    return image;
+                } else {
+                    $("#imageForm")[0].reportValidity()
+                }
+                return false;
+            }
+            function imageFromFormView(image) {
+                $("#Id_View").text(image.Id);
+                $("#GUID_View").text(image.GUID);
+                $("#date_View").text(image.Date);
+                //$("#date_input").val(Date.now());
+                $("#title_View").text(image.Title);
+                $("#description_View").text(image.Description);
+                ImageUploader.setImage('image_View', image.OriginalURL);
+                document.getElementById("image_View").addEventListener('click', (event) => {  
+                event.preventDefault();  
+                });
+
+            }
+            function imageToForm(image) {
+                $("#Id_input").val(image.Id);
+                $("#GUID_input").val(image.GUID);
+                $("#date_input").val(image.Date);
+                //$("#date_input").val(Date.now());
+                $("#title_input").val(image.Title);
+                $("#description_input").val(image.Description);
+                ImageUploader.setImage('image', image.OriginalURL);
+                $("#Share_input").val(image.Share);
+                document.getElementById("Share_input").checked=image.Share;
+            }
+           
+            /*--------------USER-----------------*/
+            let newProfil = false;
+
+            function signIn(){
+                holdCheckETag = false;
+                newProfil = false;
+                $("#loginDlg").dialog('option', 'title', "Connexion");
+                $("#loginDlgOkBtn").text("Connexion");
+                $("#loginDlg").dialog('open');
+            }
+            function CreateAccount(){
+                holdCheckETag = true;
+                newProfil = true;
+                resetProfilForm();
+                ImageUploader.imageRequired('avatar', true);
+                $("#deleteAccountsBtn").hide();
+                $("#profilDlg").dialog('option', 'title', "Création de compte");
+                $("#profilDlgOkBtn").text("S'enregistrer");
+                $("#profilDlg").dialog('open');
+            }
+            function editProfil() {
+                holdCheckETag = true;
+                newProfil = false;
+                profilToForm(retrieveUserInfo());
+                ImageUploader.imageRequired('avatar', false);
+                
+                $("#deleteAccountsBtn").show();
+                $("#profilDlg").dialog('option', 'title', "Modification de profil");
+                $("#deleteAccountsBtn").text("Désincrire");
+                $("#profilDlgOkBtn").text("Modifier");
+                $("#profilDlg").dialog('open');
+
+            }
+            function deleteAccount() {
+                holdCheckETag = true;
+                profilIdToDelete = retrieveUserInfo().Id;
+                GET_ID(
+                    profilIdToDelete,
+                    profil => {
+                        $("#confirmationMessage").html("Voulez-vous vraiment effacer votre compte?")
+                    },
+                    error
+                );
+                
+                $("#confirmDlg").dialog('option', 'title', "Retrait de compte...");
+                $("#confirmDeleteProfilDlgOkBtn").text("Effacer");
+                $("#confirmDeleteProfilDlg").dialog('open');
+            }
+            function resetProfilForm() {
+                $("#profil_id").val("0");
+                $("#profil_AvatarGUID").val("");
+                $("#profil_AvatarURL").val("");
+                $("#name_input").val("");
+                $("#email_input").val("");
+                $("#password_input").val("");
+                ImageUploader.resetImage('avatar');
+            }
+            function profilFromForm() {
+                if ($("#profilForm")[0].checkValidity()) {
+                    let profil = {
+                        Id: parseInt($("#profil_id").val()),
+                        AvatarGUID: $("#profil_AvatarGUID").val(),
+                        AvatarURL: $("#profil_AvatarURL").val(),
+                        ImageData: ImageUploader.getImageData('avatar'),
+                        Name: $("#name_input").val(),
+                        Email: $("#email_input").val(),
+                        Password: $("#password_input").val(),
+                    };
+                    return profil;
+                } else {
+                    $("#profilForm")[0].reportValidity()
+                }
+                return false;
+            }
+            function profilToForm(profil) {
+                $("#profil_id").val(profil.Id);
+                $("#profil_AvatarGUID").val(profil.AvatarGUID);
+                $("#profil_AvatarURL").val(profil.AvatarURL);
+                $("#name_input").val(profil.Name);
+                $("#email_input").val(profil.Email);
+                $("#password_input").val(profil.Password);
+                ImageUploader.setImage('avatar', profil.AvatarURL);
+            }
+            function signOut(){
+                holdCheckETag = true;
+                createMode =false;
+              
+                $("#logoutDlg").dialog('option', 'title', "Se déconnecter");
+                $("#logoutDlgOkBtn").text("Déconnexion");
+                $("#logoutDlg").dialog('open');
+                //userIdConnected = 0;
+            }
+            function updateRegister(){
+                holdCheckETag = true;
+                registerMode = true;
+                $("#emailVerifyDlg").dialog('open');
+            }
+            function retrieveUserInfo(){
+                return JSON.parse(localStorage.getItem('user'));
+            }
+            function retrieveCredentials(){
+                let user = {Email: $("#login_email_input").val(), Password: $("#login_password_input").val()};
+                return user;
+            }
+            function verifyCodeFromForm(){
+                let user = localStorage.getItem("user");
+                if($("#verifyForm")[0].checkValidity()){
+                    let verifyUser = {
+                        Id: user,
+                        VerifyCode: $["#verify_code_input"].val()
+                    };
+                    return verifyUser;
+                }else{
+                    $("#verifyForm")[0].reportValidity()
+                }
+            } 
+            function SetUserLocalStorage(user){
+                localStorage.setItem('user', JSON.stringify(user));
+            }    
+            function updateConfirmation(){
+                let userInfo = retrieveUserInfo();
+                
+                $('#loggedUserAvatarContainer').empty();
+                $('#loggedUserAvatarContainerImg').append($("<img class='avatar' src= '"+ userInfo.AvatarURL + "' />"));
+                $("#loggedUsername").text(userInfo.Name);
+
+                $("#newLoginCmd").hide();
+                $("#newRegisterCmd").hide();
+
+                $("#profilCmd").show();
+                $("#logoutCmd").show();
+                $("#newImageCmd").show();
+                
+            }
+            function updateConnected(){
+                let userInfo = retrieveUserInfo();
+                
+                $('#loggedUserAvatarContainerImg').empty();
+                $('#loggedUserAvatarContainerImg').append($("<img class='avatar' src='"+ userInfo.AvatarURL + "' />"));
+                $('#loggedUserAvatarContainerImg').show();
+                $('#loggedUserAvatarContainer').text(userInfo.Name);
+
+                $("#newLoginCmd").hide();
+                $("#newRegisterCmd").hide();
+
+                $("#profilCmd").show();
+                $("#logoutCmd").show();
+                $("#newImageCmd").show();
+                getImagesList();
+                
+            }
+            function updateToken(){
+                if(localStorage.getItem('token')){
+                    let userInfo = retrieveUserInfo();
+                
+                    $('#loggedUserAvatarContainerImg').empty();
+                    $('#loggedUserAvatarContainerImg').append($("<img class='avatar' src='"+ userInfo.AvatarURL + "' />"));
+                    $('#loggedUserAvatarContainerImg').show();
+                    $('#loggedUserAvatarContainer').text(userInfo.Name);
+
+                    $("#logoutCmd").show();
+                    $("#newImageCmd").show();
+                    $("#profilCmd").show();
+                    $("#newLoginCmd").hide();
+                    $("#newRegisterCmd").hide();
+                }
+            }
+            function updateDisconnect(){
+                $('#loggedUserAvatarContainer').empty();
+                $('#loggedUserAvatarContainerImg').empty();
+                $("#loggedUsername").text('');
+
+                localStorage.removeItem("user");
+                //console.log(localStorage.getItem('token'));
+                localStorage.removeItem("token");
+                userIdConnected = -1;
+                
+
+                $("#newLoginCmd").show();
+                $("#newRegisterCmd").show();
+
+                $("#profilCmd").hide();
+                $("#logoutCmd").hide();
+                $("#newImageCmd").hide();
+                getImagesList();
+            }
+
+/*----------------------------------------------------------------*/
+            function init_UI() {
+               
+                $("#newImageCmd").click(newImage);
+                $("#newRegisterCmd").click(CreateAccount);
+                $("#newLoginCmd").click(signIn);
+                $("#logoutCmd").click(signOut);
+                $("#profilCmd").click(editProfil);
+                $("#usersList").change(getImagesList);
+
+                $("#imageDlg").dialog({
+                    title: "...",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 640,
+                    minWidth: 640,
+                    maxWidth: 640,
+                    height: 780,
+                    minHeight: 780,
+                    maxHeight: 780,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [{
+                        id: "imageDlgOkBtn",
+                        text: "Title will be changed dynamically",
+                        click: function () {
+                            let image = imageFromForm();
+                            if (image) {
+                                if (createMode) {
+                                    POST(image, getImagesList, error);
+                                    $(".scrollContainer").scrollTop(0);
+                                }
+                                else
+                                    PUT(image, getImagesList, error);
+                                resetimageForm();
+                                holdCheckETag = false;
+                                $(this).dialog("close");
+                            }
+                        }
+                    },
+                    {
+                        text: "Annuler",
+                        click: function () {
+                            holdCheckETag = false;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+                $("#imageDlgShow").dialog({
+                    title: "...",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 640,
+                    minWidth: 640,
+                    maxWidth: 640,
+                    height: 780,
+                    minHeight: 780,
+                    maxHeight: 780,
+                    position: { my: "top", at: "top", of: window },
+
+                });
+               
+                $("#profilDlg").dialog({
+                    title: "...",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 650,
+                    minWidth: 650,
+                    maxWidth: 650,
+                    height: 780,
+                    minHeight: 780,
+                    maxHeight: 780,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: 
+                        [
+                        {
+                            id: "deleteAccountsBtn",
+                            text: "Désincrire",
+                            click: function () {
+                                deleteAccount();
+                                holdCheckETag = false;
+                                $(this).dialog("close");
+                            }
+                        },
+                        {
+                            id: "profilDlgOkBtn",
+                            text: "S'enregistrer",
+                            click: function () {
+                                let profil = profilFromForm();
+                                if(profil){
+                                    if(newProfil){
+                                        PostUser(profil, SetUserLocalStorage, error)
+                                        updateRegister();
+                                    }
+                                    else{
+                                        SetUserLocalStorage(profil);
+                                        PutUser(profil, updateConnected, error)
+                                        getImagesList();
+                                        //document.getElementById("avatar").src = profil.AvatarURL;
+                                        //$('#loggedUserAvatarContainerImg').append($("<img class='avatar' src='"+ profil.AvatarURL + "' />"));
+                                        
+                                    }
+                                    holdCheckETag = false;
+                                    $(this).dialog("close");
+                                }
+                            }
+                        },
+                        {
+                            text: "Annuler",
+                            click: function () {
+                                holdCheckETag = false;
+                                $(this).dialog("close");
+                            }
+                        }
+                        ]
+                });
+                $("#loginDlg").dialog({
+                    title: "...",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 400,
+                    minWidth: 400,
+                    maxWidth: 400,
+                    height: 350,
+                    minHeight: 350,
+                    maxHeight: 350,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [{
+                        id: "loginDlgOkBtn",
+                        text: "Connexion",
+                        click: function () {
+                            let user = retrieveCredentials();
+                            login(user, updateConnected, error);
+                            getImagesList();
+                            $(this).dialog("close");
+                        }
+                    },
+                    {
+                        text: "Annuler",
+                        click: function () {
+                            holdCheckETag = false;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+                $("#logoutDlg").dialog({
+                    title: "...",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 400,
+                    minWidth: 400,
+                    maxWidth: 400,
+                    height: 350,
+                    minHeight: 350,
+                    maxHeight: 350,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [{
+                        id: "logoutDlgOkBtn",
+                        text: "Déconnexion",
+                        click: function () {
+                            let user = retrieveCredentials();
+                            //console.log(localStorage.getItem('token'));
+                            //localStorage.removeItem('token');
+                            //console.log('test')
+                            logout(user, updateDisconnect, error);
+                            getImagesList(true);
+                            $(this).dialog("close");
+                        }
+                    },
+                    {
+                        text: "Annuler",
+                        click: function () {
+                            holdCheckETag = false;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+                $("#emailVerifyDlg").dialog({
+                    title: "...",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 400,
+                    minWidth: 400,
+                    maxWidth: 400,
+                    height: 350,
+                    minHeight: 350,
+                    maxHeight: 350,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [{
+                        id: "verifyDlgOkBtn",
+                        text: "verify",
+                        click: function () {
+                            let user = localStorage.getItem("user");
+                            let code = $("#verify_code_input").val();
+                            if(registerMode){
+                                let data = {"Id": user, "VerifyCode": code};
+                                VerifyUser(data, SetUserLocalStorage ,error)
+                                signIn();
+                            }
+                            $(this).dialog("close");
+                        }
+                    },
+                    {
+                        text: "Annuler",
+                        click: function () {
+                            holdCheckETag = false;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+                $("#confirmDeleteDlg").dialog({
+                    title: "Attention!",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 500, minWidth: 500, maxWidth: 500,
+                    height: 230, minHeight: 230, maxHeight: 230,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [{
+                        id: "confirmDeleteDlgOkBtn",
+                        text: "Oui",
+                        click: function () {
+                            holdCheckETag = false;
+                            if (imageIdToDelete)
+                                DELETE(imageIdToDelete, getImagesList, error);
+                            imageIdToDelete = 0;
+                            $(this).dialog("close");
+                        }
+                    },
+                    {
+                        text: "Annuler",
+                        click: function () {
+                            holdCheckETag = false;
+                            imageIdToDelete = 0;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+                $("#confirmDeleteProfilDlg").dialog({
+                    title: "Supprimer votre compte",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 500, minWidth: 500, maxWidth: 500,
+                    height: 230, minHeight: 230, maxHeight: 230,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [{
+                        id: "confirmDeleteProfilDlgOkBtn",
+                        text: "Oui",
+                        click: function () {
+                            holdCheckETag = false;
+                            if (profilIdToDelete)
+                                DeleteUser(profilIdToDelete, updateDisconnect, error);
+                            profilIdToDelete = 0;
+                            $(this).dialog("close");
+                        }
+                    },
+                    {
+                        text: "Annuler",
+                        click: function () {
+                            holdCheckETag = false;
+                            profilIdToDelete = 0;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+                $("#errorDlg").dialog({
+                    title: "Erreur...",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 500, minWidth: 500, maxWidth: 500,
+                    height: 230, minHeight: 230, maxHeight: 230,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [{
+                        text: "Fermer",
+                        click: function () {
+                            holdCheckETag = false;
+                            imageIdToDelete = 0;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+                $("#errorProfilDlg").dialog({
+                    title: "Erreur...",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 500, minWidth: 500, maxWidth: 500,
+                    height: 230, minHeight: 230, maxHeight: 230,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [{
+                        text: "Fermer",
+                        click: function () {
+                            holdCheckETag = false;
+                            profilIdToDelete = 0;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+
+                $(".scrollContainer").scroll(function () {
+                    if ($(".scrollContainer").scrollTop() + $(".scrollContainer").innerHeight() >= $("#imagesList").height()) {
+                        getImagesList(SelectedUserPhoto);
+                    }
+                });
+            }
+        </script>
+
+    </body>
+
+</html>

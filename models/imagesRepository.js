@@ -54,7 +54,7 @@
                     }
                 }
                 if(bindedImage["AvatarGUID"]==""){
-                    bindedImage["AvatarGUID"] = HttpContext.host + ImageFilesRepository.getThumbnailFileURL("NoAvatarPng");
+                    bindedImage["AvatarGUID"] = HttpContext.host + ImageFilesRepository.getThumbnailFileURL("No_Avatar");
                 }
                 if(bindedImage.Share){
                     bindedImage["ShareGUID"] =HttpContext.host + ImageFilesRepository.getThumbnailFileURL("UserShare");

@@ -1,6 +1,7 @@
 
 const apiBaseURL = "https://tp-final-ariannev-rickya.glitch.me/api/images";
 const apiBaseURL2 = "https://tp-final-ariannev-rickya.glitch.me/";
+//lien qui sont avec glitch.
 function HEAD(successCallBack, errorCallBack) {
     $.ajax({
         url: apiBaseURL,
